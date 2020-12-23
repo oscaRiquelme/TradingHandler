@@ -8,21 +8,27 @@
 #define MAX_STRING 500
 
 struct trade{
-    char ticker[6];
+    
     int id;
+    
+    char ticker[6];
     double entryPrice;
     double stopLoss;
     double takeProfit;
     double accountSize;
     double moneyAvailable;
-    Date date;
+    double risk;
+    boolean tradeIsFixed;
+    
     double shares;
     double profit;
     double loss;
+
+    Date date;
     char reasonsToEnter[MAX_STRING];
+    
     char result;
     char notes[MAX_STRING];
-    boolean tradeIsFixed;
 };
 
 /*Ini and free*/
@@ -62,6 +68,7 @@ Trade* trade_newTrade(int id){
     newTrade->notes[0] = '\0';
     newTrade->ticker[0] = '\0';
     newTrade->tradeIsFixed = FALSE;
+    newTrade->risk = 0;
 
     return newTrade;
 }
@@ -89,6 +96,12 @@ char*trade_getTicker(Trade * trade){
     if(!trade) return NULL;
 
     return trade->ticker;
+}
+
+double trade_getRisk(Trade * trade){
+    if(!trade) return ERR_RETURN;
+
+    return trade->risk;
 }
 
 double trade_getEntryPrice(Trade * trade){
@@ -214,6 +227,14 @@ status trade_setStopLoss(Trade * trade, double StopLoss){
     if(!trade || StopLoss >= trade->entryPrice || StopLoss <= 0) return ERR;
 
     trade->stopLoss = StopLoss;
+
+    return OK;
+}
+
+status trade_setRisk(Trade *  trade, double risk){
+    if(!trade || risk < 0) return ERR;
+
+    trade->risk = risk;
 
     return OK;
 }
