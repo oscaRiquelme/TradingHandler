@@ -14,7 +14,7 @@ typedef enum {
 }status;
 
 typedef enum {
-    FALSE = -3,
+    FALSE = 0,
     TRUE
 }boolean;
 

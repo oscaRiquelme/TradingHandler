@@ -22,6 +22,7 @@ struct trade{
     char reasonsToEnter[MAX_STRING];
     char result;
     char notes[MAX_STRING];
+    boolean tradeIsFixed;
 };
 
 /*Ini and free*/
@@ -60,6 +61,7 @@ Trade* trade_newTrade(int id){
     newTrade->result = 'x';
     newTrade->notes[0] = '\0';
     newTrade->ticker[0] = '\0';
+    newTrade->tradeIsFixed = FALSE;
 
     return newTrade;
 }
@@ -105,6 +107,12 @@ double trade_getTakeProfit(Trade * trade){
     if(!trade) return ERR_RETURN;
 
     return trade->takeProfit;
+}
+
+boolean trade_getTradeIsFixed(Trade* trade){
+    if(!trade) return FALSE;
+
+    return trade->tradeIsFixed;
 }
 
 double trade_getAccountSize(Trade * trade){
@@ -295,6 +303,13 @@ status trade_setTicker(Trade * trade, char* ticker){
     if(!trade || !ticker) return ERR;
 
     strcpy(trade->ticker, ticker);
+
+    return OK;
+}
+status trade_setFixedTrade(Trade*trade, boolean fixedTrade){
+    if(!trade) return ERR;
+
+    trade->tradeIsFixed = fixedTrade;
 
     return OK;
 }

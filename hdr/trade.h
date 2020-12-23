@@ -27,6 +27,7 @@ char trade_getResult(Trade * trade);
 char* trade_getReasonsToEnter(Trade * trade);
 char* trade_getNotes(Trade * trade);
 char*trade_getTicker(Trade * trade);
+boolean trade_getTradeIsFixed(Trade* trade);
 
 /*Setter headers*/
 status trade_setId(Trade * trade, int id);
@@ -43,8 +44,10 @@ status trade_setReasonsToEnter(Trade * trade, char* reasons);
 status trade_setResult(Trade * trade, char result);
 status trade_setNotes(Trade * trade, char* notes);
 status trade_setTicker(Trade * trade, char* ticker);
+status trade_setFixedTrade(Trade*trade, boolean fixedTrade);
 
 /*Print header*/
-    
+void trade_printTrade(Trade * trade);
+
 #endif
 
