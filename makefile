@@ -1,6 +1,6 @@
 CC = gcc -ansi -pedantic
 CFLAGS = -Wall -I ./hdr/
-EXE = calculadora
+EXE = trading
 SRC = ./src/
 HDR = ./hdr/
 OBJ = ./obj/
@@ -45,7 +45,7 @@ date.o: $(SRC)date.c $(HDR)date.h types.o
 	$(CC) $(CFLAGS) -c $<
 	mv $@ $(OBJ)
 
-calculadora: $(SRC)main.c trade.o trade_manager.o types.o
+trading: $(SRC)main.c trade.o trade_manager.o types.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
