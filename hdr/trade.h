@@ -26,6 +26,7 @@ Date trade_getDate(Trade * trade);
 char trade_getResult(Trade * trade);
 char* trade_getReasonsToEnter(Trade * trade);
 char* trade_getNotes(Trade * trade);
+char*trade_getTicker(Trade * trade);
 
 /*Setter headers*/
 status trade_setId(Trade * trade, int id);
@@ -41,6 +42,7 @@ status trade_setDate(Trade * trade, Date date);
 status trade_setReasonsToEnter(Trade * trade, char* reasons);
 status trade_setResult(Trade * trade, char result);
 status trade_setNotes(Trade * trade, char* notes);
+status trade_setTicker(Trade * trade, char* ticker);
 
 /*Print header*/
     

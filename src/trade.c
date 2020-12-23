@@ -8,6 +8,7 @@
 #define MAX_STRING 500
 
 struct trade{
+    char ticker[6];
     int id;
     double entryPrice;
     double stopLoss;
@@ -58,6 +59,7 @@ Trade* trade_newTrade(int id){
     newTrade->reasonsToEnter[0] = '\0';
     newTrade->result = 'x';
     newTrade->notes[0] = '\0';
+    newTrade->ticker[0] = '\0';
 
     return newTrade;
 }
@@ -79,6 +81,12 @@ int trade_getId(Trade * trade){
 
     return trade->id;
 
+}
+
+char*trade_getTicker(Trade * trade){
+    if(!trade) return NULL;
+
+    return trade->ticker;
 }
 
 double trade_getEntryPrice(Trade * trade){
@@ -279,6 +287,14 @@ status trade_setNotes(Trade * trade, char* notes){
     if(!trade || !notes) return ERR;
 
     strcpy(trade->notes, notes);
+
+    return OK;
+}
+
+status trade_setTicker(Trade * trade, char* ticker){
+    if(!trade || !ticker) return ERR;
+
+    strcpy(trade->ticker, ticker);
 
     return OK;
 }
