@@ -4,6 +4,7 @@ EXE = calculadora
 SRC = ./src/
 HDR = ./hdr/
 OBJ = ./obj/
+OBJECTS = trade_manager.o trade.o types.o date.o
 
 all : $(EXE) 
 
@@ -20,7 +21,7 @@ trade_manager.o: $(SRC)trade_manager.c $(HDR)trade_manager.h
 	$(CC) $(CFLAGS) -c $<
 	mv $@ $(OBJ)
 
-trade.o: $(SRC)trade.c $(HDR)trade.h types.o
+trade.o: $(SRC)trade.c types.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
@@ -29,6 +30,14 @@ trade.o: $(SRC)trade.c $(HDR)trade.h types.o
 	mv $@ $(OBJ)
 
 types.o: $(SRC)types.c $(HDR)types.h
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
+	mv $@ $(OBJ)
+
+date.o: $(SRC)date.c $(HDR)date.h types.o 
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
