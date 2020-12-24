@@ -327,6 +327,7 @@ status trade_setTicker(Trade * trade, char* ticker){
 
     return OK;
 }
+
 status trade_setFixedTrade(Trade*trade, boolean fixedTrade){
     if(!trade) return ERR;
 
@@ -335,14 +336,40 @@ status trade_setFixedTrade(Trade*trade, boolean fixedTrade){
     return OK;
 }
 
+Trade * trade_copy(Trade * trade){
+    
+    Trade *new_trade;
+    if(!trade) return NULL;
 
+    new_trade = (Trade*)malloc(sizeof(Trade));
+
+    if(!new_trade) return NULL;
+
+    new_trade->accountSize = trade->accountSize;
+    new_trade->date = trade->date;
+    new_trade->entryPrice = trade->entryPrice;
+    new_trade->id = trade->id;
+    new_trade->loss = trade->loss;
+    new_trade->moneyAvailable = trade->moneyAvailable;
+    new_trade->profit = trade->profit;
+    new_trade->result = trade->result;
+    new_trade->risk = trade->risk;
+    new_trade->shares = trade->shares;
+    new_trade->tradeIsFixed = trade->tradeIsFixed;
+    strcpy(new_trade->reasonsToEnter, trade->reasonsToEnter);
+    strcpy(new_trade->ticker, trade->ticker);
+    strcpy(new_trade->notes, trade->notes);
+    new_trade->stopLoss = trade->stopLoss;
+    new_trade->takeProfit = trade->takeProfit;
+
+    return new_trade;
+      
+}
 /*Print functions*/
 void trade_printTrade(Trade * trade){
     
     if(!trade) return;
 
-    printf("\nImprimiendo trade...");
-    printf("\n\n\n");
 
     printf("\n-------------------------------------------------------------------------------------------------------------------\n");
     printf("Id: %d\n", trade->id);

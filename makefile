@@ -3,15 +3,25 @@ CFLAGS = -Wall -I ./hdr/
 EXE = trading
 SRC = ./src/
 HDR = ./hdr/
-OBJ = ./obj/
-OBJECTS = trade_manager.o trade.o types.o date.o
+OBJ = ./obj
+TST = ./tests
+OBJECTS = trade_manager.o trade.o types.o date.o list.o
+TESTS = list_test
+DIRECTORIES = obj tests
 
-all : $(EXE) 
+all : $(DIRECTORIES) $(EXE) $(TESTS) 
 
 .PHONY : clean
 
 clean :
-	rm -f $(OBJ)*.o core $(EXE) 
+	rm -f core $(EXE) 
+	rm -r $(TST) $(OBJ)
+
+obj:
+	mkdir $@
+
+tests:
+	mkdir $@
 
 trade_manager.o: $(SRC)trade_manager.c $(HDR)trade_manager.h
 	@echo "#---------------------------"
@@ -45,9 +55,26 @@ date.o: $(SRC)date.c $(HDR)date.h types.o
 	$(CC) $(CFLAGS) -c $<
 	mv $@ $(OBJ)
 
+list.o: $(SRC)list.c $(HDR)list.h types.o trade.o
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -c $<
+	mv $@ $(OBJ)
+
+
 trading: $(SRC)main.c trade.o trade_manager.o types.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)trade.o $(OBJ)trade_manager.o $(OBJ)types.o
+	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o
+
+list_test: $(SRC)list_test.c trade.o list.o types.o
+	@echo "#---------------------------"
+	@echo "# Generando $@"
+	@echo "# Depende de $^"
+	@echo "# Ha cambiado $<"
+	$(CC) $(CFLAGS) -o $@ $(SRC)list_test.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o
+	mv $@ $(TST)

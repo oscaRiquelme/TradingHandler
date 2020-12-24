@@ -48,6 +48,7 @@ status trade_setTicker(Trade * trade, char* ticker);
 status trade_setFixedTrade(Trade*trade, boolean fixedTrade);
 status trade_setRisk(Trade *  trade, double risk);
 
+Trade * trade_copy(Trade * trade);
 /*Print header*/
 void trade_printTrade(Trade * trade);
 
