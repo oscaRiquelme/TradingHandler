@@ -5,7 +5,7 @@
 #include "trade.h"
 
 
-#define MAX_STRING 500
+
 
 struct trade{
     

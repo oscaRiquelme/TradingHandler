@@ -2,3 +2,4 @@ antiguo
 *.o
 trading
 tests
+log.txt

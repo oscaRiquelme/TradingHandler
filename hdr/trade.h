@@ -4,6 +4,8 @@
 #include "types.h"
 #include "date.h"
 
+#define MAX_STRING 500
+
 typedef struct trade Trade;
 
 /*Initializers & cleaners*/
