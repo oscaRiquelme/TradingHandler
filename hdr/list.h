@@ -13,5 +13,7 @@ Trade * tradeList_getTrade(TradeList * tradeList, int id);
 status tradeList_deleteTrade(TradeList * tradeList, int id);
 status tradeList_insertTrade(TradeList * tradeList, Trade * trade);
 void tradeList_printList(TradeList * tradeList);
+int tradeList_getNumberOfTrades(TradeList * tradeList);
+Trade * tradeList_getTradeByIndex(TradeList * tradeList, int index);
 
 #endif

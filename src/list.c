@@ -196,6 +196,53 @@ void tradeList_printList(TradeList * tradeList){
     
 }
 
+Trade * tradeList_getTradeByIndex(TradeList * tradeList, int index){
+
+    int counter = 0;
+    Node * aux;
+
+    if(!tradeList || index < 0 ){
+        printf("\nWrong Arguments Passed to get a trade by index. Returning NULL...");
+        return NULL;
+    }
+
+    aux = tradeList->head;
+
+    while(counter != index && aux != NULL){
+        aux = aux->next;
+        counter++;
+    }
+    if(!aux){
+        printf("\nIndex given is bigger than the number of trades. Returning NULL");
+        return NULL;
+    } 
+        
+
+    return aux->trade;
+
+
+}
+
+int tradeList_getNumberOfTrades(TradeList * tradeList){
+
+    int counter = 0;
+    Node *aux = NULL;
+
+    if(!tradeList){
+        printf("\nError getting the number of trades o a tradeList. Returning ERR_RETURN...");
+        return ERR_RETURN;
+    }
+
+    aux = tradeList->head;
+
+    while(aux){
+        aux = aux->next;
+        counter ++;
+    }
+
+    return counter;
+
+}
 
 
 

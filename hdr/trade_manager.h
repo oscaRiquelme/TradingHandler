@@ -14,4 +14,7 @@ TradeList * trade_manager_getOpenTrades(Trade_manager * trade_manager);
 status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* file);
 status trade_manager_readPendingFromFile(Trade_manager * trade_manager, char* file);
 status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file);
+status trade_manager_savePendingTrades(Trade_manager * trade_manager, char * file);
+status trade_manager_saveOpenTrades(Trade_manager * trade_manager, char * file);
+status trade_manager_saveHistoryTrades(Trade_manager * trade_manager, char * file);
 #endif

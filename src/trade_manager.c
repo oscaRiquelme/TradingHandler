@@ -296,7 +296,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
     status errorControl;
 
     if(!trade_manager || !file){
-        printf("\nWrong arguments passed to the readPendingFromFile function, returning NULL");
+        printf("\nWrong arguments passed to the readOpenFromFile function, returning NULL");
         return ERR;
     } 
 
@@ -309,14 +309,14 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
 
     f = fopen(file, "r");
     if(!f){
-        printf("\n Error loading the pending trading. Returning ERR...\n");
+        printf("\n Error loading the Open trading. Returning ERR...\n");
         tradeList_destroyList(trade_manager->openTrades);
         return ERR;
     }
 
     trade = trade_newTrade(NO_ID);
     if(!trade){
-        printf("\nError  allocating memory for a new trade variable in trade_manager_readPendingFromFile. Returning ERR...\n");
+        printf("\nError  allocating memory for a new trade variable in trade_manager_readOpenFromFile. Returning ERR...\n");
         fclose(f);
         tradeList_destroyList(trade_manager->openTrades);
         return ERR;
@@ -374,7 +374,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setId(trade, id);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -382,7 +382,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setTicker(trade, ticker);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -390,7 +390,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setEntryPrice(trade, entryPrice);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -398,7 +398,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setStopLoss(trade, stopLoss);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -406,7 +406,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setTakeProfit(trade, takeProfit);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -414,7 +414,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setAccountSize(trade, accountSize);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -422,7 +422,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setMoneyAvailable(trade, moneyAvailable);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -430,7 +430,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setRisk(trade, risk);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -438,7 +438,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setFixedTrade(trade, tradeIsFixed);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -446,7 +446,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setShares(trade, shares);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -455,14 +455,14 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
                 trade_freeTrade(trade);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 fclose(f);
                 return ERR;
             }    
             errorControl = trade_setLoss(trade, loss);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -470,7 +470,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setDate(trade, date);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -478,7 +478,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = trade_setReasonsToEnter(trade, reasons);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -487,7 +487,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             errorControl = tradeList_insertTrade(trade_manager->openTrades, trade);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the Open trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -531,7 +531,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
     status errorControl;
 
     if(!trade_manager || !file){
-        printf("\nWrong arguments passed to the readPendingFromFile function, returning NULL");
+        printf("\nWrong arguments passed to the readHistoryFromFile function, returning NULL");
         return ERR;
     } 
 
@@ -544,21 +544,21 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
 
     f = fopen(file, "r");
     if(!f){
-        printf("\n Error loading the pending trading. Returning ERR...\n");
+        printf("\n Error loading the history trading. Returning ERR...\n");
         tradeList_destroyList(trade_manager->historyTrades);
         return ERR;
     }
 
     trade = trade_newTrade(NO_ID);
     if(!trade){
-        printf("\nError  allocating memory for a new trade variable in trade_manager_readPendingFromFile. Returning ERR...\n");
+        printf("\nError allocating memory for a new trade variable in trade_manager_readHistoryFromFile. Returning ERR...\n");
         fclose(f);
         tradeList_destroyList(trade_manager->historyTrades);
         return ERR;
     }
     
     while(fgets(line, CHAR_MAX, f)){
-        if (strncmp("#o:", line, 3) == 0)
+        if (strncmp("#h:", line, 3) == 0)
         {
             toks = strtok(line + 3, "|");
             id = atoi(toks);
@@ -613,7 +613,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setId(trade, id);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -621,7 +621,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setTicker(trade, ticker);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -629,7 +629,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setEntryPrice(trade, entryPrice);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -637,7 +637,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setStopLoss(trade, stopLoss);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -645,7 +645,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setTakeProfit(trade, takeProfit);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -653,7 +653,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setAccountSize(trade, accountSize);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -661,7 +661,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setMoneyAvailable(trade, moneyAvailable);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -669,7 +669,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setRisk(trade, risk);    
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -677,7 +677,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setFixedTrade(trade, tradeIsFixed);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -685,7 +685,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setShares(trade, shares);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -694,14 +694,14 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
                 trade_freeTrade(trade);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 fclose(f);
                 return ERR;
             }    
             errorControl = trade_setLoss(trade, loss);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -709,7 +709,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setDate(trade, date);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -717,7 +717,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setReasonsToEnter(trade, reasons);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -726,7 +726,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setResult(trade, result);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -735,7 +735,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = trade_setNotes(trade, notes);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -744,7 +744,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             errorControl = tradeList_insertTrade(trade_manager->historyTrades, trade);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);
-                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                printf("\nError setting the read variables of the History trades. Returning ERR...\n");
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
@@ -757,4 +757,258 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
     return OK;
 }
 
+status trade_manager_savePendingTrades(Trade_manager * trade_manager, char * file){
+
+    FILE *f;
+    int numTrades;
+    int i = 0;
+
+    Trade * trade; 
+
+    int id;
+    char ticker[6];
+    double entryPrice;
+    double stopLoss;
+    double takeProfit;
+    double accountSize;
+    double moneyAvailable;
+    double risk;
+    boolean tradeIsFixed;
+
+    double shares;
+    double profit;
+    double loss;
+
+    if(!trade_manager || !file){
+        printf("\nWrong arguments passed to the function to save Pending trades. Returning ERR...");
+        return ERR;
+    }
+    if(!trade_manager->pendingTrades){
+        printf("\nThe list for the pending trades points NULL. Returning ERR...");
+    }
+
+    /*Remove the file to allow fopen to create a new empty one with the modifications*/
+    remove(file);
+
+    f = fopen(file, "w");
+
+    if(!f){
+        printf("\nError opening the file to save the pending trades. Returning ERR...");
+        return ERR;
+    }
+
+    numTrades = tradeList_getNumberOfTrades(trade_manager->pendingTrades);
+    if(numTrades == ERR_RETURN){
+        printf("\nError getting the number of trades lo save the pending trades info. Returning ERR..."); 
+        fclose(f);
+        return ERR;   
+    }
+
+    while(i < numTrades){
+
+        trade = tradeList_getTradeByIndex(trade_manager->pendingTrades, i);
+        if(!trade){
+            printf("\nError getting the trade to save it. Returning ERR...");
+            return ERR;           
+        }
+
+
+        id = trade_getId(trade);
+        strcpy(ticker, trade_getTicker(trade));
+        entryPrice = trade_getEntryPrice(trade);
+        stopLoss = trade_getStopLoss(trade);
+        takeProfit = trade_getTakeProfit(trade);
+        accountSize = trade_getAccountSize(trade);
+        moneyAvailable = trade_getMoneyAvailable(trade);
+        risk = trade_getRisk(trade);
+        tradeIsFixed = trade_getTradeIsFixed(trade);
+        shares = trade_getShares(trade);
+        profit = trade_getProfit(trade);
+        loss = trade_getLoss(trade);
+
+        fprintf(f,"#p:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f\n",id, ticker,entryPrice, stopLoss, 
+        takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss);
+        
+        i++;
+    }
+
+    return OK;
+
+}
+
+status trade_manager_saveOpenTrades(Trade_manager * trade_manager, char * file){
+
+    FILE *f;
+    int numTrades;
+    int i = 0;
+
+    Trade * trade; 
+
+    int id;
+    char ticker[6];
+    double entryPrice;
+    double stopLoss;
+    double takeProfit;
+    double accountSize;
+    double moneyAvailable;
+    double risk;
+    boolean tradeIsFixed;
+
+    double shares;
+    double profit;
+    double loss;
+
+    Date date;
+    char reasons[MAX_STRING];
+
+    if(!trade_manager || !file){
+        printf("\nWrong arguments passed to the function to save Open trades. Returning ERR...");
+        return ERR;
+    }
+    if(!trade_manager->openTrades){
+        printf("\nThe list for the open trades points NULL. Returning ERR...");
+    }
+
+    /*Remove the file to allow fopen to create a new empty one with the modifications*/
+    remove(file);
+
+    f = fopen(file, "w");
+
+    if(!f){
+        printf("\nError opening the file to save the open trades. Returning ERR...");
+        return ERR;
+    }
+
+    numTrades = tradeList_getNumberOfTrades(trade_manager->openTrades);
+    if(numTrades == ERR_RETURN){
+        printf("\nError getting the number of trades lo save the open trades info. Returning ERR..."); 
+        fclose(f);
+        return ERR;   
+    }
+
+    while(i < numTrades){
+
+        trade = tradeList_getTradeByIndex(trade_manager->openTrades, i);
+        if(!trade){
+            printf("\nError getting the trade to save it. Returning ERR...");
+            return ERR;           
+        }
+
+
+        id = trade_getId(trade);
+        strcpy(ticker, trade_getTicker(trade));
+        entryPrice = trade_getEntryPrice(trade);
+        stopLoss = trade_getStopLoss(trade);
+        takeProfit = trade_getTakeProfit(trade);
+        accountSize = trade_getAccountSize(trade);
+        moneyAvailable = trade_getMoneyAvailable(trade);
+        risk = trade_getRisk(trade);
+        tradeIsFixed = trade_getTradeIsFixed(trade);
+        shares = trade_getShares(trade);
+        profit = trade_getProfit(trade);
+        loss = trade_getLoss(trade);
+        strcpy(reasons, trade_getReasonsToEnter(trade));
+        date = trade_getDate(trade);
+
+        fprintf(f,"#o:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s\n",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+      date.seconds, date.day, date.month, date.year, reasons);
+        
+        i++;
+    }
+
+    return OK;
+
+}
+
+status trade_manager_saveHistoryTrades(Trade_manager * trade_manager, char * file){
+
+    FILE *f;
+    int numTrades;
+    int i = 0;
+
+    Trade * trade; 
+
+    int id;
+    char ticker[6];
+    double entryPrice;
+    double stopLoss;
+    double takeProfit;
+    double accountSize;
+    double moneyAvailable;
+    double risk;
+    boolean tradeIsFixed;
+
+    double shares;
+    double profit;
+    double loss;
+
+    Date date;
+    char reasons[MAX_STRING];
+
+    char result;
+    char notes[MAX_STRING];
+
+    if(!trade_manager || !file){
+        printf("\nWrong arguments passed to the function to save Open trades. Returning ERR...");
+        return ERR;
+    }
+    if(!trade_manager->openTrades){
+        printf("\nThe list for the open trades points NULL. Returning ERR...");
+    }
+
+    /*Remove the file to allow fopen to create a new empty one with the modifications*/
+    remove(file);
+
+    f = fopen(file, "w");
+
+    if(!f){
+        printf("\nError opening the file to save the open trades. Returning ERR...");
+        return ERR;
+    }
+
+    numTrades = tradeList_getNumberOfTrades(trade_manager->openTrades);
+    if(numTrades == ERR_RETURN){
+        printf("\nError getting the number of trades lo save the open trades info. Returning ERR..."); 
+        fclose(f);
+        return ERR;   
+    }
+
+    while(i < numTrades){
+
+        trade = tradeList_getTradeByIndex(trade_manager->openTrades, i);
+        if(!trade){
+            printf("\nError getting the trade to save it. Returning ERR...");
+            return ERR;           
+        }
+
+
+        id = trade_getId(trade);
+        strcpy(ticker, trade_getTicker(trade));
+        entryPrice = trade_getEntryPrice(trade);
+        stopLoss = trade_getStopLoss(trade);
+        takeProfit = trade_getTakeProfit(trade);
+        accountSize = trade_getAccountSize(trade);
+        moneyAvailable = trade_getMoneyAvailable(trade);
+        risk = trade_getRisk(trade);
+        tradeIsFixed = trade_getTradeIsFixed(trade);
+        shares = trade_getShares(trade);
+        profit = trade_getProfit(trade);
+        loss = trade_getLoss(trade);
+        strcpy(reasons, trade_getReasonsToEnter(trade));
+        date = trade_getDate(trade);
+        result = trade_getResult(trade);
+        strcpy(notes, trade_getNotes(trade));
+
+
+        fprintf(f,"#h:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s|%c|%s\n",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+      date.seconds, date.day, date.month, date.year, reasons, result, notes);
+        
+        i++;
+    }
+
+    return OK;
+
+}
 

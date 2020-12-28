@@ -64,12 +64,12 @@ list.o: $(SRC)list.c $(HDR)list.h types.o trade.o
 	mv $@ $(OBJ)
 
 
-trading: $(SRC)main.c trade.o trade_manager.o types.o
+trading: $(SRC)main.c trade.o trade_manager.o types.o list.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o
+	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o
 
 list_test: $(SRC)list_test.c trade.o list.o types.o
 	@echo "#---------------------------"
