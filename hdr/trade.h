@@ -51,8 +51,10 @@ status trade_setFixedTrade(Trade*trade, boolean fixedTrade);
 status trade_setRisk(Trade *  trade, double risk);
 
 Trade * trade_copy(Trade * trade);
-/*Print header*/
-void trade_printTrade(Trade * trade);
+/*Print headers*/
+void trade_printPendingTrade(Trade * trade);
+void trade_printOpenTrade(Trade * trade);
+void trade_printHistoryTrade(Trade * trade);
 
 #endif
 

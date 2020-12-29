@@ -7,7 +7,7 @@ OBJ = ./obj
 TST = ./tests
 OBJECTS = trade_manager.o trade.o types.o date.o list.o
 TESTS = list_test
-DIRECTORIES = obj tests
+DIRECTORIES = obj tests log
 
 all : $(DIRECTORIES) $(EXE) $(TESTS) 
 
@@ -23,6 +23,9 @@ obj:
 tests:
 	mkdir $@
 
+log:
+	mkdir $@
+
 trade_manager.o: $(SRC)trade_manager.c $(HDR)trade_manager.h
 	@echo "#---------------------------"
 	@echo "# Generando $@"
@@ -31,15 +34,15 @@ trade_manager.o: $(SRC)trade_manager.c $(HDR)trade_manager.h
 	$(CC) $(CFLAGS) -c $<
 	mv $@ $(OBJ)
 
-trade.o: $(SRC)trade.c types.o
+trade.o: $(SRC)trade.c types.o date.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< 
 	mv $@ $(OBJ)
 
-types.o: $(SRC)types.c $(HDR)types.h
+types.o: $(SRC)types.c $(HDR)types.h 
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
@@ -64,17 +67,17 @@ list.o: $(SRC)list.c $(HDR)list.h types.o trade.o
 	mv $@ $(OBJ)
 
 
-trading: $(SRC)main.c trade.o trade_manager.o types.o list.o
+trading: $(SRC)main.c trade.o trade_manager.o types.o list.o date.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o
+	$(CC) $(CFLAGS) -o $@ $(SRC)main.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o $(OBJ)/date.o
 
-list_test: $(SRC)list_test.c trade.o list.o types.o
+list_test: $(SRC)list_test.c trade.o list.o types.o date.o
 	@echo "#---------------------------"
 	@echo "# Generando $@"
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $(SRC)list_test.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o
+	$(CC) $(CFLAGS) -o $@ $(SRC)list_test.c $(OBJ)/trade.o $(OBJ)/trade_manager.o $(OBJ)/types.o $(OBJ)/list.o $(OBJ)/date.o
 	mv $@ $(TST)

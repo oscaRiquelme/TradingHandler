@@ -189,8 +189,8 @@ void tradeList_printList(TradeList * tradeList){
     printf("\nPRINTING LIST...\n");
 
     while(tmp != NULL){
-        trade_printTrade(tmp->trade);
-        printf("\n\n\n");
+        /*trade_printTrade(tmp->trade);
+        */printf("\n\n\n");
         tmp = tmp->next;
     }       
     

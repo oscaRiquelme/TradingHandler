@@ -7,27 +7,30 @@
 status date_setDateToCurrent(Date *date){
     
     time_t now;
+    struct tm *local;
+    
     time(&now);
 
-    struct tm *local = localtime(&now);
+    local = localtime(&now);
 
-    date->hours = local->tm_hour;          // get hours since midnight (0-23)
-    date->minutes = local->tm_min;         // get minutes passed after the hour (0-59)
-    date->seconds = local->tm_sec;         // get seconds passed after minute (0-59)
-    date->day = local->tm_mday;            // get day of month (1 to 31)
-    date->month = local->tm_mon + 1;       // get month of year (0 to 11)
-    date->year = local->tm_year + 1900;    // get year since 1900
- 
+    date->hours = local->tm_hour;          /* get hours since midnight (0-23) */
+    date->minutes = local->tm_min;         /* get minutes passed after the hour (0-59) */
+    date->seconds = local->tm_sec;         /* get seconds passed after minute (0-59) */
+    date->day = local->tm_mday;            /* get day of month (1 to 31) */
+    date->month = local->tm_mon + 1;       /* get month of year (0 to 11) */ 
+    date->year = local->tm_year + 1900;    /* get year since 1900 */
+    
+    return OK;
 }
 
 void date_printDate(Date date){
 
     printf("%02d/%02d/%d ", date.day, date.month, date.year);
 
-    if (date.hours < 12)    // before midday
+    if (date.hours < 12)    /* before midday */
         printf("%02d:%02d:%02d am\n", date.hours, date.minutes, date.seconds);
  
-    else    // after midday
+    else    /* after midday */
         printf("%02d:%02d:%02d pm\n", date.hours - 12, date.minutes, date.seconds);
  
     

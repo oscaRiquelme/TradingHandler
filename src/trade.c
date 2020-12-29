@@ -37,11 +37,6 @@ Trade* trade_newTrade(int id){
 
     Trade *newTrade;
 
-    if(id == NO_ID){
-        printf("\n Id passed to create a new Trade variable is not valid(NO_ID). Returning NULL\n");
-        return NULL;
-    } 
-
     newTrade = (Trade*)malloc(sizeof(Trade));
     if(!newTrade){
         printf("\nCan't allocate memory for a new Trade variable. Returning NULL...\n");
@@ -365,29 +360,69 @@ Trade * trade_copy(Trade * trade){
     return new_trade;
       
 }
+
+
 /*Print functions*/
-void trade_printTrade(Trade * trade){
+void trade_printPendingTrade(Trade * trade){
     
     if(!trade) return;
 
 
-    printf("\n-------------------------------------------------------------------------------------------------------------------\n");
+    
     printf("Id: %d\n", trade->id);
+    printf("TICKER: %s\n", trade->ticker);
     printf("Account size(€): %.2f\n", trade->accountSize);
     printf("Money available(€): %.2f\n",trade->moneyAvailable);
     printf("\nEntry price($): %.2f\n",trade->entryPrice);
     printf("Stop loss($): %.2f\n", trade->stopLoss);
     printf("Take profit($): %.2f\n",  trade->takeProfit);
     printf("Shares: %.2f\n", trade->shares);
-    printf("Profit if it goes well(€): ");
-    green();
-    printf("%.2f(+%.2f%%)\n", trade->profit, trade->profit*100/trade->accountSize);
-    defaults();
-    printf("\tLoss if it goes wrong: ");
+    if(trade->tradeIsFixed == TRUE){
+        printf("Profit if it goes well(€): ");
+        green();
+        printf("%.2f(+%.2f%%)\n", trade->profit, trade->profit*100/trade->accountSize);
+        defaults();
+    }
+    else printf("No price target was introduced\n");
+    printf("Loss if it goes wrong: ");
     red();
     printf("%.2f(-%.2f%%)\n",trade->loss, trade->loss*100/trade->accountSize);
     defaults();
-    printf("-------------------------------------------------------------------------------------------------------------------\n");
+    
 
+
+}
+
+void trade_printOpenTrade(Trade* trade){
+
+    if(!trade) return;
+
+    trade_printPendingTrade(trade);
+    printf("Date: ");
+    date_printDate(trade->date);
+    printf("Reasons to enter the trade: %s\n", trade->reasonsToEnter);
+    
+}
+
+void trade_printHistoryTrade(Trade * trade){
+
+    if(!trade) return;
+
+    trade_printOpenTrade(trade);
+    printf("Result: ");
+    if(trade->result == 'W' || trade->result == 'w'){
+        green();
+        printf("WIN\n");
+        defaults();
+    }
+    else if(trade->result == 'l' || trade->result == 'L'){
+        red();
+        printf("LOSS :(\n");
+        defaults();
+    }
+    printf("Notes: %s\n", trade->notes);
+
+
+    
 
 }
