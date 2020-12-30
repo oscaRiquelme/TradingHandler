@@ -6,6 +6,7 @@
 #include "trade.h" 
 #include "list.h"
 
+
 struct trade_manager{
     
     TradeList * pendingTrades;

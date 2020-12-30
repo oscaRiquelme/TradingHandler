@@ -1,4 +1,7 @@
 #include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<time.h>
 
 #include "trade.h"
 #include "trade_manager.h"
@@ -7,17 +10,25 @@
 #define OPEN_LOG_FILE "./log/open.txt"
 #define HISTORY_LOG_FILE "./log/history.txt"
 
-void menu(int *opcion);
+#define MAX_TRADES 100
+
+
+void menu(int *option);
+void menuPending(int *option);
+
 void calculate_trade(Trade_manager *trade_manager);
-void view_pending();
+void view_pending(Trade_manager *trade_manager);
 void view_open();
 void view_history();
 
+int aleat_num(int inf, int sup);
+
 /*TODO: CALCULA TRADE + FUNCTIONALITY TO ADD TO PENDING*/
 int main(){
-    int opcion;
+    int option;
     Trade_manager *trade_manager = NULL;
 
+    srand(time(NULL));
     trade_manager = trade_manager_newTradeManager();
 
     if(!trade_manager){
@@ -43,23 +54,29 @@ int main(){
 
     do{
         do{
-            menu(&opcion);
-        }while(opcion < 1 && opcion > 5);
+            menu(&option);
+        }while(option < 1 && option > 5);
 
-        if(opcion == 1){
-            calculate_trade(trade_manager);
+        switch(option){
+            case 1:
+                calculate_trade(trade_manager);
+                break;
+            case 2:
+                view_pending(trade_manager);
+                break;
+            case 3:
+                view_open();
+                break;
+            case 4:
+                view_history();
+                break;
+            case 5:
+                break;
         }
-        else if(opcion == 2){
-            view_pending();
-        }
-        else if(opcion == 3){
-            view_open();
-        }
-        else if(opcion == 4){
-            view_history();
-        }
+        
+      
     
-    }while(opcion != 5);
+    }while(option != 5);
 
     printf("\n\nExitings the program.....\n\n");
 
@@ -68,7 +85,9 @@ int main(){
     return 0;
 }
 
-void menu(int *opcion){
+void menu(int *option){
+
+    if(!option) return;
     
     printf("\n==============================================================\n");
     printf("\nWelcome to the trade handler...\n");
@@ -80,10 +99,9 @@ void menu(int *opcion){
     printf("\n\t5. Exit");
 
     printf("\n\nChoose an option: ");
-    scanf("\n%d", opcion);
+    scanf("\n%d", option);
     printf("\n==============================================================\n");
 }
-
 
 void calculate_trade(Trade_manager *trade_manager){
     
@@ -96,6 +114,8 @@ void calculate_trade(Trade_manager *trade_manager){
     double moneyAvailable;
     double risk;
     double maxRisk;
+    int id;
+    int numTrades;
 
     double shares;
     double profit;
@@ -104,6 +124,9 @@ void calculate_trade(Trade_manager *trade_manager){
 
     Trade * aux;
     char option;
+    int flag;
+    int i;
+    TradeList *pending = NULL;
 
        if(!trade_manager){
         printf("\nWrong arguments passed to calculate a trade. Returning...");
@@ -212,8 +235,21 @@ void calculate_trade(Trade_manager *trade_manager){
         scanf("\n%c", &option);
     }while(option != 'Y' && option != 'N' && option != 'y' && option != 'n');
 
+    pending = trade_manager_getPendingTrades(trade_manager);
+
     if(option == 'Y' || option == 'y'){
-        tradeList_insertTrade(trade_manager_getPendingTrades(trade_manager), aux);
+        flag = 0;
+        numTrades = tradeList_getNumberOfTrades(pending);
+        while(flag == 0){
+            flag = 1;
+            id = aleat_num(1, MAX_TRADES);
+            for(i = 0; i < numTrades; i++){
+                if(trade_getId(tradeList_getTradeByIndex(pending, i)) == id) flag = 0;
+            }
+        }
+        printf("ID: %d", id);
+        trade_setId(aux, id);
+        tradeList_insertTrade(pending, aux);
     }
     trade_freeTrade(aux);
 
@@ -222,12 +258,64 @@ void calculate_trade(Trade_manager *trade_manager){
 
 }
 
-void view_pending(){
+void view_pending(Trade_manager *trade_manager){
+    
+    int option;
+    int id;
+    TradeList *pending;
+
+    pending = trade_manager_getPendingTrades(trade_manager);
+    do{
+
+        do{
+            menuPending(&option);
+        }while(option < 1 || option > 5);
+
+        switch(option){
+            case 1:
+                tradeList_printList(pending);
+                break;
+            
+            case 2:
+                printf("\nIntroduce the id of the trade you want to delete: ");
+                scanf("\n%d", &id);
+                if(tradeList_deleteTrade(pending, id) == ERR){
+                    printf("\nCouldn't delete the trade with the id given.");
+                }
+                else printf("\nTrade Successfully deleted");
+            
+            case 3:
+                break;
+        }
+    }while(option != 5);
+    
 
 }
+
 void view_open(){
 
 }
+
 void view_history(){
 
+}
+
+void menuPending(int *option){
+    
+    if(!option) return;
+    printf("\n--------------------------------------------------------------------------------\n");
+    printf("\nWhat do you want to do?\n");
+    printf("\n\t1.View summary of pending trades");
+    printf("\n\t2.Delete a trade");
+    printf("\n\t3.Open a position (will delete from pending trades)");
+    printf("\n\t4.Generate and open a text file with all the pending trades");
+    printf("\n\t5.Exit");
+    printf("\n\nChoose an option: ");
+    scanf("\n%d", option);
+    printf("\n--------------------------------------------------------------------------------\n");
+
+}
+
+int aleat_num(int inf, int sup){
+  return rand()/((double)RAND_MAX+1.)*(sup-inf+1)+inf;
 }

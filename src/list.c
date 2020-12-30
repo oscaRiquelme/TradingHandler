@@ -84,6 +84,7 @@ status tradeList_insertTrade(TradeList * tradeList, Trade * trade){
     }
 
     tmp->next = new;
+    
     return OK;
 
 }
@@ -100,6 +101,8 @@ status tradeList_deleteTrade(TradeList * tradeList, int id){
 
     tmp = tradeList->head;
     /*Base case (if we want to delete the head)*/
+    if(!tmp) return ERR;
+
     if(trade_getId(tmp->trade) == id){
         tradeList->head = tmp->next;
         trade_freeTrade(tmp->trade);
@@ -118,8 +121,8 @@ status tradeList_deleteTrade(TradeList * tradeList, int id){
                 free(aux);
                 return OK;
             }
-            tmp = tmp->next;
         }
+        tmp = tmp->next;
     }
     return ERR;
 
@@ -186,11 +189,10 @@ void tradeList_printList(TradeList * tradeList){
         return;
     } 
 
-    printf("\nPRINTING LIST...\n");
+    printf("\nPRINTING LIST OF TRADES...\n");
 
     while(tmp != NULL){
-        /*trade_printTrade(tmp->trade);
-        */printf("\n\n\n");
+        trade_printTradeOneLine(tmp->trade);
         tmp = tmp->next;
     }       
     

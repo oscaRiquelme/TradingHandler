@@ -55,6 +55,7 @@ Trade * trade_copy(Trade * trade);
 void trade_printPendingTrade(Trade * trade);
 void trade_printOpenTrade(Trade * trade);
 void trade_printHistoryTrade(Trade * trade);
+void trade_printTradeOneLine(Trade * trade);
 
 #endif
 

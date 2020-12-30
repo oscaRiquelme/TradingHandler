@@ -206,7 +206,9 @@ char* trade_getNotes(Trade * trade){
 status trade_setId(Trade * trade, int id){
     if(!trade) return NO_ID;
 
-    return trade->id;
+    trade->id = id;
+
+    return OK;
 
 }
 
@@ -425,4 +427,13 @@ void trade_printHistoryTrade(Trade * trade){
 
     
 
+}
+
+void trade_printTradeOneLine(Trade * trade){
+
+    if(!trade) return;
+
+    printf("\nId: %d | TICKER: %s | EntryPrice %.2f | stopLoss: %.2f |", trade->id, trade->ticker, trade->entryPrice, trade->stopLoss);
+    if(trade->tradeIsFixed == TRUE) printf(" TakeProfit: %.2f", trade->takeProfit);
+    else printf(" No price target");
 }
