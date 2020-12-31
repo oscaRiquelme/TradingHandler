@@ -365,66 +365,90 @@ Trade * trade_copy(Trade * trade){
 
 
 /*Print functions*/
-void trade_printPendingTrade(Trade * trade){
+void trade_printPendingTrade(Trade * trade, char* filename){
     
+    FILE *f;
     if(!trade) return;
 
+    if(!filename) f = stdout;
+    else
+    f = fopen(filename, "a");
 
+    if(!f) return;
     
-    printf("Id: %d\n", trade->id);
-    printf("TICKER: %s\n", trade->ticker);
-    printf("Account size(€): %.2f\n", trade->accountSize);
-    printf("Money available(€): %.2f\n",trade->moneyAvailable);
-    printf("\nEntry price($): %.2f\n",trade->entryPrice);
-    printf("Stop loss($): %.2f\n", trade->stopLoss);
-    printf("Take profit($): %.2f\n",  trade->takeProfit);
-    printf("Shares: %.2f\n", trade->shares);
+    fprintf( f, "Id: %d\n", trade->id);
+    fprintf( f, "TICKER: %s\n", trade->ticker);
+    fprintf( f, "Account size(€): %.2f\n", trade->accountSize);
+    fprintf( f, "Money available(€): %.2f\n",trade->moneyAvailable);
+    fprintf( f, "\nEntry price($): %.2f\n",trade->entryPrice);
+    fprintf( f, "Stop loss($): %.2f\n", trade->stopLoss);
+    fprintf( f, "Take profit($): %.2f\n",  trade->takeProfit);
+    fprintf( f, "Shares: %.2f\n", trade->shares);
     if(trade->tradeIsFixed == TRUE){
-        printf("Profit if it goes well(€): ");
+        fprintf( f, "Profit if it goes well(€): ");
         green();
-        printf("%.2f(+%.2f%%)\n", trade->profit, trade->profit*100/trade->accountSize);
+        fprintf( f, "%.2f(+%.2f%%)\n", trade->profit, trade->profit*100/trade->accountSize);
         defaults();
     }
-    else printf("No price target was introduced\n");
-    printf("Loss if it goes wrong: ");
+    else fprintf( f, "No price target was introduced\n");
+    fprintf( f, "Loss if it goes wrong: ");
     red();
-    printf("%.2f(-%.2f%%)\n",trade->loss, trade->loss*100/trade->accountSize);
+    fprintf( f, "%.2f(-%.2f%%)\n",trade->loss, trade->loss*100/trade->accountSize);
     defaults();
     
-
+    if(filename)
+        fclose(f);
 
 }
 
-void trade_printOpenTrade(Trade* trade){
+void trade_printOpenTrade(Trade* trade, char* filename){
 
+    FILE * f;
     if(!trade) return;
 
-    trade_printPendingTrade(trade);
-    printf("Date: ");
-    date_printDate(trade->date);
-    printf("Reasons to enter the trade: %s\n", trade->reasonsToEnter);
+    trade_printPendingTrade(trade, filename);
     
+    if(!filename) f = stdout;
+    else f = fopen(filename, "a");
+    
+    if(!f) return;
+    
+    fprintf( f, "Date: ");
+    date_printDate(trade->date);
+    fprintf( f, "Reasons to enter the trade: %s\n", trade->reasonsToEnter);
+    
+    fclose(f);
 }
 
-void trade_printHistoryTrade(Trade * trade){
+void trade_printHistoryTrade(Trade * trade, char* filename){
+
+    FILE *f;
 
     if(!trade) return;
 
-    trade_printOpenTrade(trade);
-    printf("Result: ");
+
+    trade_printOpenTrade(trade, filename);
+    
+    if(!filename) f = stdout;
+    else f = fopen(filename, "a");
+    
+    if(!f) return;
+
+
+    fprintf( f, "Result: ");
     if(trade->result == 'W' || trade->result == 'w'){
         green();
-        printf("WIN\n");
+        fprintf( f, "WIN\n");
         defaults();
     }
     else if(trade->result == 'l' || trade->result == 'L'){
         red();
-        printf("LOSS :(\n");
+        fprintf( f, "LOSS :(\n");
         defaults();
     }
-    printf("Notes: %s\n", trade->notes);
+    fprintf( f, "Notes: %s\n", trade->notes);
 
-
+    fclose(f);
     
 
 }

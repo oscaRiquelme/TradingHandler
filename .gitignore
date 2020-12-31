@@ -3,3 +3,6 @@ trash
 trading
 tests
 *.txt
+HistoryTrades
+OpenedTrades
+PendingTrades

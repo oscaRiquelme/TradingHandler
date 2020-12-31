@@ -52,9 +52,9 @@ status trade_setRisk(Trade *  trade, double risk);
 
 Trade * trade_copy(Trade * trade);
 /*Print headers*/
-void trade_printPendingTrade(Trade * trade);
-void trade_printOpenTrade(Trade * trade);
-void trade_printHistoryTrade(Trade * trade);
+void trade_printPendingTrade(Trade * tradem, char* filename);
+void trade_printOpenTrade(Trade * trade, char* filename);
+void trade_printHistoryTrade(Trade * trade, char* filename);
 void trade_printTradeOneLine(Trade * trade);
 
 #endif

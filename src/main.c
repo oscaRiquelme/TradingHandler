@@ -2,6 +2,7 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<time.h>
+#include<string.h>
 
 #include "trade.h"
 #include "trade_manager.h"
@@ -9,6 +10,10 @@
 #define PENDING_LOG_FILE "./log/pending.txt"
 #define OPEN_LOG_FILE "./log/open.txt"
 #define HISTORY_LOG_FILE "./log/history.txt"
+
+#define PENDING_INFO_FILE "PendingTrades"
+#define OPEN_INFO_FILE "OpenedTrades"
+#define HISTORY_INFO_FILE "HistoryTrades"
 
 #define MAX_TRADES 100
 
@@ -227,9 +232,9 @@ void calculate_trade(Trade_manager *trade_manager){
         trade_setTakeProfit(aux, 0);
     }
     printf("\n--------------------------------------------------------------------------------\n");
-    trade_printPendingTrade(aux);
-
+    trade_printPendingTrade(aux, NULL);
     printf("\n--------------------------------------------------------------------------------\n");
+    
     do{
         printf("\nDo you want to save this trade to the pending trades? [Y/N] ");
         scanf("\n%c", &option);
@@ -262,7 +267,13 @@ void view_pending(Trade_manager *trade_manager){
     
     int option;
     int id;
+    int i = 0;
+    int numTrades;
     TradeList *pending;
+    Trade * aux;
+    FILE *f;
+    char openCommand[40];
+
 
     pending = trade_manager_getPendingTrades(trade_manager);
     do{
@@ -283,9 +294,50 @@ void view_pending(Trade_manager *trade_manager){
                     printf("\nCouldn't delete the trade with the id given.");
                 }
                 else printf("\nTrade Successfully deleted");
-            
-            case 3:
                 break;
+            case 3:
+                printf("\nIntroduce the id of the trade you want to delete: ");
+                scanf("\n%d", &id);
+
+                aux = tradeList_getTrade(pending, id);
+                if(!aux){
+                    printf("\nCouldn't find the trade with the id given.");
+                    break;
+                }
+                if(tradeList_insertTrade(trade_manager_getOpenTrades(trade_manager), aux) == ERR){
+                    printf("\nCouldn't open the trade with the id given.");
+                    trade_freeTrade(aux);
+                    break;            
+                }
+                if(tradeList_deleteTrade(pending, id) == ERR){
+                    printf("\nCouldn't delete the trade with the id given.");
+                }
+                else printf("\nTrade Successfully opened");
+                trade_freeTrade(aux);
+                break;
+                
+            case 4:
+                fclose(fopen(PENDING_INFO_FILE, "w"));
+                numTrades = tradeList_getNumberOfTrades(pending);
+
+                printf("\nGenerating the pending trades file...\n");
+                
+                for(i = 0; i < numTrades; i++){
+                    trade_printPendingTrade(tradeList_getTradeByIndex(pending, i), PENDING_INFO_FILE);
+                    f = fopen(PENDING_INFO_FILE, "a");
+                    if(f)
+                    fprintf(f,"\n\n\n---------------------------------------------------------------------------");
+                    fclose(f);
+                }
+
+                strcpy(openCommand, "xdg-open ");
+                strcat(openCommand, PENDING_INFO_FILE);
+                system(openCommand);
+
+
+                break;
+            case 5: 
+                printf("\nExiting the pending trades menu...\n");
         }
     }while(option != 5);
     
