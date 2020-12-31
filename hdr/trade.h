@@ -31,6 +31,7 @@ char* trade_getNotes(Trade * trade);
 char*trade_getTicker(Trade * trade);
 boolean trade_getTradeIsFixed(Trade* trade);
 double trade_getRisk(Trade * trade);
+double trade_getPositionSize(Trade * trade);
 
 /*Setter headers*/
 status trade_setId(Trade * trade, int id);
@@ -49,6 +50,7 @@ status trade_setNotes(Trade * trade, char* notes);
 status trade_setTicker(Trade * trade, char* ticker);
 status trade_setFixedTrade(Trade*trade, boolean fixedTrade);
 status trade_setRisk(Trade *  trade, double risk);
+status trade_setPositionSize(Trade * trade, double positionSize);
 
 Trade * trade_copy(Trade * trade);
 /*Print headers*/

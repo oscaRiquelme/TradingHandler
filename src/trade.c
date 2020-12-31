@@ -23,6 +23,7 @@ struct trade{
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Date date;
     char reasonsToEnter[MAX_STRING];
@@ -64,6 +65,7 @@ Trade* trade_newTrade(int id){
     newTrade->ticker[0] = '\0';
     newTrade->tradeIsFixed = FALSE;
     newTrade->risk = 0;
+    newTrade->positionSize = 0;
 
     return newTrade;
 }
@@ -79,6 +81,12 @@ status trade_freeTrade(Trade * trade){
 
 
 /*Getters*/
+
+double trade_getPositionSize(Trade * trade){
+    if(!trade) return ERR_RETURN;
+
+    return trade->positionSize;
+}
 
 int trade_getId(Trade * trade){
     if(!trade) return NO_ID;
@@ -203,6 +211,15 @@ char* trade_getNotes(Trade * trade){
 
 
 /*Setters*/
+
+status trade_setPositionSize(Trade * trade, double positionSize){
+    if(!trade) return ERR;
+
+    trade->positionSize = positionSize;
+
+    return OK;
+}
+
 status trade_setId(Trade * trade, int id){
     if(!trade) return NO_ID;
 
@@ -358,6 +375,7 @@ Trade * trade_copy(Trade * trade){
     strcpy(new_trade->notes, trade->notes);
     new_trade->stopLoss = trade->stopLoss;
     new_trade->takeProfit = trade->takeProfit;
+    new_trade->positionSize = trade->positionSize;
 
     return new_trade;
       
@@ -384,6 +402,7 @@ void trade_printPendingTrade(Trade * trade, char* filename){
     fprintf( f, "Stop loss($): %.2f\n", trade->stopLoss);
     fprintf( f, "Take profit($): %.2f\n",  trade->takeProfit);
     fprintf( f, "Shares: %.2f\n", trade->shares);
+    fprintf( f, "Position Size(€): %.2f\n", trade->positionSize);
     if(trade->tradeIsFixed == TRUE){
         fprintf( f, "Profit if it goes well(€): ");
         green();
@@ -457,7 +476,8 @@ void trade_printTradeOneLine(Trade * trade){
 
     if(!trade) return;
 
-    printf("\nId: %d | TICKER: %s | EntryPrice %.2f | stopLoss: %.2f |", trade->id, trade->ticker, trade->entryPrice, trade->stopLoss);
-    if(trade->tradeIsFixed == TRUE) printf(" TakeProfit: %.2f", trade->takeProfit);
-    else printf(" No price target");
+    printf("\nId: %d | TICKER: %s | EntryPrice %.2f | StopLoss: %.2f |", trade->id, trade->ticker, trade->entryPrice, trade->stopLoss);
+    if(trade->tradeIsFixed == TRUE) printf(" TakeProfit: %.2f | ", trade->takeProfit);
+    else printf(" No price target |");
+    printf(" Position Size: %.2f", trade->positionSize);
 }

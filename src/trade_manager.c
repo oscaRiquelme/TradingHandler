@@ -87,6 +87,7 @@ status trade_manager_readPendingFromFile(Trade_manager * trade_manager, char* fi
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Trade * trade = NULL;
     char line[CHAR_MAX];
@@ -149,11 +150,13 @@ status trade_manager_readPendingFromFile(Trade_manager * trade_manager, char* fi
             profit = atol(toks);
             toks = strtok(NULL, "|");
             loss = atol(toks);
+            toks = strtok(NULL, "|");
+            positionSize = atol(toks);
 
 
     #ifdef DEBUG
-      printf("Leido: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f",id, ticker,entryPrice, stopLoss, 
-      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss);
+      printf("Read: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize);
 #endif
 
             errorControl = trade_setId(trade, id);
@@ -251,7 +254,15 @@ status trade_manager_readPendingFromFile(Trade_manager * trade_manager, char* fi
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
-    }    
+    }
+            errorControl = trade_setPositionSize(trade, positionSize);
+            if(errorControl == ERR){
+                tradeList_destroyList(trade_manager->pendingTrades);
+                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                trade_freeTrade(trade);
+                fclose(f);
+                return ERR;
+    }     
 
             errorControl = tradeList_insertTrade(trade_manager->pendingTrades, trade);
             if(errorControl == ERR){
@@ -261,6 +272,8 @@ status trade_manager_readPendingFromFile(Trade_manager * trade_manager, char* fi
                 fclose(f);
                 return ERR;
         }    
+        
+
     
         }
     }
@@ -285,6 +298,7 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Trade * trade = NULL;
     char line[CHAR_MAX];
@@ -351,6 +365,8 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
             toks = strtok(NULL, "|");
             loss = atol(toks);
             toks = strtok(NULL, "|");
+            positionSize = atol(toks);
+            toks = strtok(NULL, "|");
             date.hours = atoi(toks);
             toks = strtok(NULL, "|");
             date.minutes = atoi(toks);
@@ -367,8 +383,8 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
 
 
     #ifdef DEBUG
-      printf("Leido: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s",id, ticker,entryPrice, stopLoss, 
-      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+      printf("Leido: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize, date.hours, date.minutes, 
       date.seconds, date.day, date.month, date.year, reasons);
 #endif
 
@@ -467,7 +483,15 @@ status trade_manager_readOpenFromFile(Trade_manager * trade_manager, char* file)
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
-            }    
+            }
+            errorControl = trade_setPositionSize(trade, positionSize);
+            if(errorControl == ERR){
+                tradeList_destroyList(trade_manager->openTrades);
+                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                trade_freeTrade(trade);
+                fclose(f);
+                return ERR;
+            }      
             errorControl = trade_setDate(trade, date);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->openTrades);    
@@ -517,6 +541,7 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Trade * trade = NULL;
     char line[CHAR_MAX];
@@ -586,6 +611,8 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
             toks = strtok(NULL, "|");
             loss = atol(toks);
             toks = strtok(NULL, "|");
+            positionSize = atol(toks);
+            toks = strtok(NULL, "|");
             date.hours = atoi(toks);
             toks = strtok(NULL, "|");
             date.minutes = atoi(toks);
@@ -606,8 +633,8 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
 
 
     #ifdef DEBUG
-      printf("Leido: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s|%c|%s|",id, ticker,entryPrice, stopLoss, 
-      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+      printf("Leido: %d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s|%c|%s|",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize, date.hours, date.minutes, 
       date.seconds, date.day, date.month, date.year, reasons, result, notes);
 #endif
 
@@ -706,7 +733,15 @@ status trade_manager_readHistoryFromFile(Trade_manager * trade_manager, char* fi
                 trade_freeTrade(trade);
                 fclose(f);
                 return ERR;
-            }    
+            }
+            errorControl = trade_setPositionSize(trade, positionSize);
+            if(errorControl == ERR){
+                tradeList_destroyList(trade_manager->historyTrades);
+                printf("\nError setting the read variables of the pending trades. Returning ERR...\n");
+                trade_freeTrade(trade);
+                fclose(f);
+                return ERR;
+            }      
             errorControl = trade_setDate(trade, date);
             if(errorControl == ERR){
                 tradeList_destroyList(trade_manager->historyTrades);    
@@ -779,6 +814,7 @@ status trade_manager_savePendingTrades(Trade_manager * trade_manager, char * fil
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     if(!trade_manager || !file){
         printf("\nWrong arguments passed to the function to save Pending trades. Returning ERR...");
@@ -826,9 +862,10 @@ status trade_manager_savePendingTrades(Trade_manager * trade_manager, char * fil
         shares = trade_getShares(trade);
         profit = trade_getProfit(trade);
         loss = trade_getLoss(trade);
+        positionSize = trade_getPositionSize(trade);
 
-        fprintf(f,"#p:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f\n",id, ticker,entryPrice, stopLoss, 
-        takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss);
+        fprintf(f,"#p:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f\n",id, ticker,entryPrice, stopLoss, 
+        takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize);
         
         i++;
     }
@@ -858,6 +895,7 @@ status trade_manager_saveOpenTrades(Trade_manager * trade_manager, char * file){
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Date date;
     char reasons[MAX_STRING];
@@ -908,11 +946,12 @@ status trade_manager_saveOpenTrades(Trade_manager * trade_manager, char * file){
         shares = trade_getShares(trade);
         profit = trade_getProfit(trade);
         loss = trade_getLoss(trade);
+        positionSize = trade_getPositionSize(trade);
         strcpy(reasons, trade_getReasonsToEnter(trade));
         date = trade_getDate(trade);
 
-        fprintf(f,"#o:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s\n",id, ticker,entryPrice, stopLoss, 
-      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+        fprintf(f,"#o:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s\n",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize,date.hours, date.minutes, 
       date.seconds, date.day, date.month, date.year, reasons);
         
         i++;
@@ -943,6 +982,7 @@ status trade_manager_saveHistoryTrades(Trade_manager * trade_manager, char * fil
     double shares;
     double profit;
     double loss;
+    double positionSize;
 
     Date date;
     char reasons[MAX_STRING];
@@ -996,14 +1036,15 @@ status trade_manager_saveHistoryTrades(Trade_manager * trade_manager, char * fil
         shares = trade_getShares(trade);
         profit = trade_getProfit(trade);
         loss = trade_getLoss(trade);
+        positionSize = trade_getPositionSize(trade);
         strcpy(reasons, trade_getReasonsToEnter(trade));
         date = trade_getDate(trade);
         result = trade_getResult(trade);
         strcpy(notes, trade_getNotes(trade));
 
 
-        fprintf(f,"#h:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s|%c|%s\n",id, ticker,entryPrice, stopLoss, 
-      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, date.hours, date.minutes, 
+        fprintf(f,"#h:%d|%s|%f|%f|%f|%f|%f|%f|%d|%f|%f|%f|%f|%d|%d|%d|%d|%d|%d|%s|%c|%s\n",id, ticker,entryPrice, stopLoss, 
+      takeProfit, accountSize, moneyAvailable, risk, tradeIsFixed, shares, profit, loss, positionSize, date.hours, date.minutes, 
       date.seconds, date.day, date.month, date.year, reasons, result, notes);
         
         i++;

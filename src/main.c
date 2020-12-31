@@ -40,6 +40,7 @@ int main(){
         printf("\nCouldn't allocate memory for a trade manager variable. Finishing the program...");
         return -1;
     }
+    
     if(trade_manager_readPendingFromFile(trade_manager, PENDING_LOG_FILE) == ERR){
         printf("\nCouldn't read the pending log file. Finishing the program...");
         trade_manager_destroyManager(trade_manager);
@@ -55,7 +56,7 @@ int main(){
         trade_manager_destroyManager(trade_manager);
         return -1;
     }
-
+    
 
     do{
         do{
@@ -121,6 +122,7 @@ void calculate_trade(Trade_manager *trade_manager){
     double maxRisk;
     int id;
     int numTrades;
+    double positionSize;
 
     double shares;
     double profit;
@@ -194,6 +196,7 @@ void calculate_trade(Trade_manager *trade_manager){
     maxShares = (0.95*moneyAvailable)/entryPrice; /*0.95 means the percentage of the total capital my broker allows me to risk*/
     maxRisk = 100*maxShares*(entryPrice - stopLoss);
     maxRisk /= accountSize;
+    
    
     do{
         printf("\nHow much capital do you want to risk?(Between 1%% and %.2f%%): ", maxRisk);
@@ -213,6 +216,7 @@ void calculate_trade(Trade_manager *trade_manager){
 
     accountSize = accountSize*DOLAR_TO_EURO;
     moneyAvailable = moneyAvailable*DOLAR_TO_EURO; 
+    positionSize = shares*entryPrice*DOLAR_TO_EURO;
 
     trade_setAccountSize(aux, accountSize);
     trade_setEntryPrice(aux, entryPrice);
@@ -223,6 +227,7 @@ void calculate_trade(Trade_manager *trade_manager){
     trade_setShares(aux, shares);
     trade_setStopLoss(aux, stopLoss);
     trade_setTicker(aux, ticker);
+    trade_setPositionSize(aux, positionSize);
     if(tradeIsFixed == TRUE){
         trade_setProfit(aux, profit);
         trade_setTakeProfit(aux, takeProfit);
@@ -252,7 +257,6 @@ void calculate_trade(Trade_manager *trade_manager){
                 if(trade_getId(tradeList_getTradeByIndex(pending, i)) == id) flag = 0;
             }
         }
-        printf("ID: %d", id);
         trade_setId(aux, id);
         tradeList_insertTrade(pending, aux);
     }
@@ -273,6 +277,8 @@ void view_pending(Trade_manager *trade_manager){
     Trade * aux;
     FILE *f;
     char openCommand[40];
+    char reasons[MAX_STRING];
+    Date currentDate;
 
 
     pending = trade_manager_getPendingTrades(trade_manager);
@@ -304,6 +310,15 @@ void view_pending(Trade_manager *trade_manager){
                     printf("\nCouldn't find the trade with the id given.");
                     break;
                 }
+                if(date_setDateToCurrent(&currentDate) == ERR){
+                    printf("\nCouldn't get the date to open the trade.");
+                    trade_freeTrade(aux);
+                    break;
+                }
+                trade_setDate(aux, currentDate);
+                printf("\nIntroduce the reasons to enter the trade: ");
+                scanf("\n%[^\n]", reasons);
+
                 if(tradeList_insertTrade(trade_manager_getOpenTrades(trade_manager), aux) == ERR){
                     printf("\nCouldn't open the trade with the id given.");
                     trade_freeTrade(aux);
