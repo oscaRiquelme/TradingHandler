@@ -23,15 +23,16 @@ status date_setDateToCurrent(Date *date){
     return OK;
 }
 
-void date_printDate(Date date){
+void date_printDate(Date date, FILE *f){
 
-    printf("%02d/%02d/%d ", date.day, date.month, date.year);
+    if(!f) return;
+    fprintf(f, "%02d/%02d/%d ", date.day, date.month, date.year);
 
     if (date.hours < 12)    /* before midday */
-        printf("%02d:%02d:%02d am\n", date.hours, date.minutes, date.seconds);
+        fprintf(f, "%02d:%02d:%02d am\n", date.hours, date.minutes, date.seconds);
  
     else    /* after midday */
-        printf("%02d:%02d:%02d pm\n", date.hours - 12, date.minutes, date.seconds);
+        fprintf(f, "%02d:%02d:%02d pm\n", date.hours - 12, date.minutes, date.seconds);
  
     
 }

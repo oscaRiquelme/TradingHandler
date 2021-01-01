@@ -254,7 +254,7 @@ status trade_setRisk(Trade *  trade, double risk){
 }
 
 status trade_setTakeProfit(Trade * trade, double TakeProfit){
-    if(!trade || TakeProfit <= 0 || TakeProfit <= trade->entryPrice) return ERR;
+    if(!trade) return ERR;
 
     trade->takeProfit = TakeProfit;
 
@@ -433,7 +433,7 @@ void trade_printOpenTrade(Trade* trade, char* filename){
     if(!f) return;
     
     fprintf( f, "Date: ");
-    date_printDate(trade->date);
+    date_printDate(trade->date, f);
     fprintf( f, "Reasons to enter the trade: %s\n", trade->reasonsToEnter);
     
     fclose(f);
@@ -476,7 +476,7 @@ void trade_printTradeOneLine(Trade * trade){
 
     if(!trade) return;
 
-    printf("\nId: %d | TICKER: %s | EntryPrice %.2f | StopLoss: %.2f |", trade->id, trade->ticker, trade->entryPrice, trade->stopLoss);
+    printf("\nId: %02d | TICKER: %s | EntryPrice %.2f | StopLoss: %.2f |", trade->id, trade->ticker, trade->entryPrice, trade->stopLoss);
     if(trade->tradeIsFixed == TRUE) printf(" TakeProfit: %.2f | ", trade->takeProfit);
     else printf(" No price target |");
     printf(" Position Size: %.2f", trade->positionSize);
